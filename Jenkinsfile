@@ -7,7 +7,7 @@ pipeline {
     environment {
         legacyedge =''
         customerservice = ''
-        registryCredential = 'App_20178'
+        registryCredential = 'darsanantra-dockerhub'
 
     }
     
