@@ -1,20 +1,20 @@
 def strangler_images = ["legacy-edge","customer-service","edge-service","profile-web","discovery-service","config-service","user-service","profile-service"]
 
 pipeline {
-    agent {label 'workernode2'}
+    agent {label 'jenkins_node1'}
     
 
     environment {
         legacyedge =''
         customerservice = ''
-        registryCredential = 'darsanantra-dockerhub'
+        registryCredential = 'App_20178'
 
     }
     
     stages {
         stage('Checkout Git') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'Github-credential', url: 'https://github.com/darsan-antra/cloud-native-microservice-strangler-example.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: '', url: 'https://github.com/yzhang598/cloud-native-microservice-strangler.git']]])
             }
         }
         stage('Build') {
@@ -28,7 +28,7 @@ pipeline {
             steps {
                 script {
 				    strangler_images.each { name->
-				        sh "docker tag ${name}:latest darsanantra/${name}"
+				        sh "docker tag ${name}:latest yzhang598/micro:${name}"
                 }
             }
         }
@@ -40,7 +40,7 @@ pipeline {
                 script {
                     docker.withRegistry( '', registryCredential ) {
                         strangler_images.each { name->
-                            sh "docker push darsanantra/${name}"
+                            sh "docker push yzhang598/mircro:${name}"
                         }
                     }
                 }
